@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ASHA Sahayak</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --red: #e53935;
+            --red-dark: #b71c1c;
+            --orange: #ff8c00;
+            --blue: #1565c0;
+            --green: #2e7d32;
+            --bg: #f5f6fa;
+            --text: #1a1a2e;
+            --muted: #888;
+            --radius: 14px;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .screen {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            transition: opacity 0.3s;
+        }
+
+        .screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, var(--red-dark), var(--red));
+            padding: 11px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(183, 28, 28, 0.35);
+            flex-shrink: 0;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+        }
+
+        .header h1 {
+            color: #fff;
+            font-weight: 900;
+            font-size: 17px;
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 11px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hdr-sel {
+            background: rgba(255, 255, 255, 0.18);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 7px;
+            padding: 4px 7px;
+            font-size: 12px;
+            font-family: inherit;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .hdr-sel option {
+            color: #333;
+            background: #fff;
+        }
+
+        .patient-badge {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 7px;
+            padding: 4px 9px;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* LOGIN */
+        #loginScreen {
+            background: linear-gradient(160deg, #fce4ec, #e8eaf6, #e3f2fd);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 30px;
+            width: 420px;
+            max-width: 95vw;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(28px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .login-logo .icon {
+            font-size: 46px;
+        }
+
+        .login-logo h2 {
+            font-size: 19px;
+            font-weight: 900;
+            color: var(--red-dark);
+            margin-top: 5px;
+        }
+
+        .login-logo p {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .login-lang {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 14px;
+        }
+
+        .login-lang select {
+            padding: 7px 16px;
+            border-radius: 9px;
+            border: 2px solid #eee;
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+            cursor: pointer;
+            background: #f8f8f8;
+            font-weight: 700;
+        }
+
+        .login-lang select:focus {
+            border-color: var(--red);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 9px;
+            margin-bottom: 18px;
+        }
+
+        .btn-tab {
+            flex: 1;
+            padding: 10px;
+            border-radius: 9px;
+            border: 2px solid #eee;
+            font-size: 13px;
+            font-weight: 700;
+            background: #f8f8f8;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-tab.active {
+            background: var(--red);
+            color: #fff;
+            border-color: var(--red);
+        }
+
+        .form-group {
+            margin-bottom: 11px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 9px 12px;
+            border: 2px solid #eee;
+            border-radius: 9px;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+            background: #fafafa;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--red);
+            background: #fff;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 11px;
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            color: #fff;
+            border: none;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+            box-shadow: 0 4px 14px rgba(229, 57, 53, 0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:disabled {
+            background: #ccc;
+            box-shadow: none;
+            transform: none;
+            cursor: not-allowed;
+        }
+
+        .alert-banner {
+            margin: 11px 0 0;
+            padding: 12px;
+            border-radius: 11px;
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border: 2px solid var(--orange);
+            display: none;
+            animation: slideUp 0.3s ease;
+        }
+
+        .alert-banner.show {
+            display: block;
+        }
+
+        .alert-banner .alert-title {
+            font-weight: 800;
+            color: var(--orange);
+            font-size: 13px;
+            margin-bottom: 3px;
+        }
+
+        .alert-banner .alert-body {
+            font-size: 12px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .alert-emergency {
+            background: linear-gradient(135deg, #fff0f0, #ffcdd2) !important;
+            border-color: var(--red) !important;
+        }
+
+        .alert-emergency .alert-title {
+            color: var(--red) !important;
+        }
+
+        /* TABS */
+        .tabs {
+            display: flex;
+            background: #fff;
+            border-bottom: 2px solid #f0f0f0;
+            flex-shrink: 0;
+            padding: 0 14px;
+        }
+
+        .tab-btn {
+            padding: 9px 13px;
+            font-size: 13px;
+            font-weight: 700;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: var(--muted);
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            color: var(--red);
+            border-bottom-color: var(--red);
+        }
+
+        .tab-content {
+            flex: 1;
+            overflow: hidden;
+            display: none;
+            flex-direction: column;
+        }
+
+        .tab-content.active {
+            display: flex;
+        }
+
+        /* CHAT */
+        .chat-wrap {
+            flex: 1;
+            overflow-y: auto;
+            padding: 13px;
+            scroll-behavior: smooth;
+        }
+
+        .chat-wrap::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .chat-wrap::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 4px;
+        }
+
+        .msg-row {
+            display: flex;
+            margin-bottom: 11px;
+            align-items: flex-end;
+            gap: 7px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .msg-row.user {
+            justify-content: flex-end;
+        }
+
+        .avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .avatar.bot {
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+        }
+
+        .avatar.user {
+            background: linear-gradient(135deg, #1a237e, #283593);
+        }
+
+        .msg-block {
+            max-width: 74%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .msg-block.user-block {
+            align-items: flex-end;
+        }
+
+        .bubble {
+            padding: 10px 13px;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .bubble.bot {
+            background: #fff;
+            border: 1px solid #f0f0f0;
+            border-radius: 15px 15px 15px 4px;
+            box-shadow: 0 2px 9px rgba(0, 0, 0, 0.06);
+        }
+
+        .bubble.user {
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            color: #fff;
+            border-radius: 15px 15px 4px 15px;
+            box-shadow: 0 2px 9px rgba(229, 57, 53, 0.3);
+        }
+
+        /* COPY BTN */
+        .copy-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            margin-top: 4px;
+            padding: 3px 9px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--muted);
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .copy-btn:hover {
+            background: #eee;
+            color: #333;
+        }
+
+        .copy-btn.copied {
+            color: var(--green);
+            border-color: var(--green);
+            background: #f0fff4;
+        }
+
+        .mode-tag {
+            font-size: 11px;
+            color: var(--red);
+            font-weight: 700;
+            margin-top: 2px;
+        }
+
+        /* TYPING */
+        .typing {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 11px 13px;
+        }
+
+        .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--red);
+            animation: pulse 1.2s infinite;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1)
+            }
+
+            50% {
+                opacity: 0.4;
+                transform: scale(0.8)
+            }
+        }
+
+        /* TRIAGE CARD */
+        .triage-card {
+            margin-top: 8px;
+            border-radius: 11px;
+            overflow: hidden;
+            border: 2px solid;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+        }
+
+        .triage-head {
+            padding: 9px 13px;
+            color: #fff;
+            font-weight: 800;
+            font-size: 13px;
+        }
+
+        .triage-body {
+            padding: 12px;
+        }
+
+        .triage-reasoning {
+            font-size: 12px;
+            color: #666;
+            font-style: italic;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 7px;
+            margin-bottom: 8px;
+        }
+
+        .triage-advice {
+            font-size: 13px;
+            color: #333;
+            line-height: 1.7;
+        }
+
+        .facilities {
+            margin-top: 9px;
+            background: #fff;
+            border-radius: 7px;
+            padding: 9px;
+            border: 1px solid #eee;
+        }
+
+        .facilities h4 {
+            font-size: 11px;
+            color: var(--muted);
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .facility-row {
+            font-size: 12px;
+            margin-bottom: 3px;
+        }
+
+        .ambulance {
+            margin-top: 6px;
+            font-size: 12px;
+            color: var(--red);
+            font-weight: 800;
+        }
+
+        /* HEALTH BANNER */
+        .health-banner {
+            background: #fff8f8;
+            border-bottom: 2px solid #ffcdd2;
+            padding: 7px 14px;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .health-banner.show {
+            display: flex;
+        }
+
+        .health-banner span {
+            font-size: 13px;
+            color: #c62828;
+            font-weight: 700;
+        }
+
+        .btn-exit {
+            font-size: 12px;
+            color: var(--red);
+            background: none;
+            border: 1px solid #ffcdd2;
+            border-radius: 6px;
+            padding: 3px 9px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        /* INPUT */
+        .input-row {
+            padding: 9px 13px;
+            background: #fff;
+            border-top: 1px solid #f0f0f0;
+            box-shadow: 0 -4px 14px rgba(0, 0, 0, 0.05);
+            flex-shrink: 0;
+        }
+
+        .input-inner {
+            display: flex;
+            gap: 7px;
+            align-items: flex-end;
+        }
+
+        textarea.msg-input {
+            flex: 1;
+            padding: 10px 13px;
+            border: 2px solid #eee;
+            border-radius: 11px;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            resize: none;
+            transition: border-color 0.2s;
+            max-height: 110px;
+            line-height: 1.5;
+        }
+
+        textarea.msg-input:focus {
+            border-color: var(--red);
+        }
+
+        .btn-send {
+            width: 41px;
+            height: 41px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 13px rgba(229, 57, 53, 0.4);
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .btn-send:disabled {
+            background: #ddd;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        .input-hint {
+            font-size: 11px;
+            color: #bbb;
+            text-align: center;
+            margin-top: 4px;
+        }
+
+        /* DASHBOARD */
+        .dash-wrap {
+            flex: 1;
+            overflow-y: auto;
+            padding: 14px;
+        }
+
+        .dash-card {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 13px 15px;
+            margin-bottom: 9px;
+            box-shadow: var(--shadow);
+            border: 2px solid #eee;
+        }
+
+        .dash-card.flagged {
+            border-color: #ffcdd2;
+        }
+
+        .dash-name {
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        .dash-meta {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .dash-stats {
+            display: flex;
+            gap: 14px;
+            margin-top: 8px;
+        }
+
+        .stat-box {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-size: 19px;
+            font-weight: 900;
+        }
+
+        .stat-lbl {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        /* IMCI */
+        .imci-wrap {
+            flex: 1;
+            overflow-y: auto;
+            padding: 13px;
+        }
+
+        .imci-section {
+            border-radius: var(--radius);
+            overflow: hidden;
+            margin-bottom: 11px;
+            box-shadow: var(--shadow);
+        }
+
+        .imci-head {
+            padding: 10px 13px;
+            color: #fff;
+            font-weight: 800;
+            font-size: 13px;
+        }
+
+        .imci-body {
+            padding: 11px 13px;
+        }
+
+        .imci-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #f5f5f5;
+            font-size: 13px;
+        }
+
+        .imci-row:last-child {
+            border-bottom: none;
+        }
+
+        .imci-cond {
+            font-weight: 700;
+        }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 18px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 13px;
+            height: 13px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ══════════ LOGIN SCREEN ══════════ -->
+    <div id="loginScreen" class="screen">
+        <div class="login-card">
+            <div class="login-logo">
+                <div class="icon">🏥</div>
+                <h2 id="loginTitle">ASHA Sahayak</h2>
+                <p id="loginSub">AI Health Assistant · Enter patient details to begin</p>
+            </div>
+
+            <!-- ONE language selector controls BOTH UI and chat language -->
+            <div class="login-lang">
+                <select id="uiLangSel" onchange="applyUILang(this.value)">
+                    <option value="en">🌐 English</option>
+                    <option value="hi">हिंदी (Hindi)</option>
+                    <option value="te">తెలుగు (Telugu)</option>
+                    <option value="kn">ಕನ್ನಡ (Kannada)</option>
+                    <option value="ta">தமிழ் (Tamil)</option>
+                </select>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn-tab active" id="tabOld" onclick="switchTab('old')" data-ui="existing_patient">👤
+                    Existing Patient</button>
+                <button class="btn-tab" id="tabNew" onclick="switchTab('new')" data-ui="new_patient">➕ New
+                    Patient</button>
+            </div>
+
+            <div id="formOld">
+                <div class="form-group">
+                    <label data-ui="patient_id_label">Patient ID</label>
+                    <input id="oldPatientId" type="text" placeholder="e.g. ASHA001" style="text-transform:uppercase" />
+                </div>
+                <div id="alertBanner" class="alert-banner">
+                    <div class="alert-title" id="alertTitle">⚠️ Recent Visit Alert</div>
+                    <div class="alert-body" id="alertBody"></div>
+                </div>
+                <br />
+                <button class="btn-primary" id="btnLogin" onclick="loginExisting()" data-ui="continue_btn">Continue
+                    →</button>
+            </div>
+
+            <div id="formNew" style="display:none">
+                <div class="form-group">
+                    <label data-ui="patient_id_label">Patient ID</label>
+                    <input id="newPatientId" type="text" placeholder="e.g. ASHA042" style="text-transform:uppercase" />
+                </div>
+                <div class="form-group">
+                    <label data-ui="full_name_label">Full Name</label>
+                    <input id="newName" type="text" />
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-ui="age_label">Age</label>
+                        <input id="newAge" type="number" min="0" max="120" />
+                    </div>
+                    <div class="form-group">
+                        <label data-ui="gender_label">Gender</label>
+                        <select id="newGender">
+                            <option value="" data-ui="select_opt">Select</option>
+                            <option>Male</option>
+                            <option>Female</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label data-ui="village_label">Village</label>
+                        <input id="newVillage" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label data-ui="phone_label">Phone (optional)</label>
+                        <input id="newPhone" type="tel" />
+                    </div>
+                </div>
+                <button class="btn-primary" id="btnRegister" onclick="registerNew()" data-ui="register_btn">Register &
+                    Start →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════ MAIN APP ══════════ -->
+    <div id="appScreen" class="screen hidden">
+        <div class="header">
+            <div class="header-left">
+                <div class="logo">🏥</div>
+                <div>
+                    <h1>ASHA Sahayak</h1>
+                    <p id="headerSub">General Assistant</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="patient-badge" id="patientBadge" onclick="goToLogin()">👤 —</div>
+                <!-- ONE selector: changes UI language AND chat language together -->
+                <select id="appUiLangSel" class="hdr-sel" onchange="applyUILang(this.value)">
+                    <option value="en">🌐 English</option>
+                    <option value="hi">हिंदी</option>
+                    <option value="te">తెలుగు</option>
+                    <option value="kn">ಕನ್ನಡ</option>
+                    <option value="ta">தமிழ்</option>
+                </select>
+                <select id="modelSel" class="hdr-sel">
+                    <option value="llama-3.3-70b-versatile">Llama 70B</option>
+                    <option value="llama-3.1-8b-instant">Llama 8B ⚡</option>
+                    <option value="mixtral-8x7b-32768">Mixtral</option>
+                    <option value="gemma2-9b-it">Gemma 2</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('chat')" data-ui="tab_chat">💬 Chat</button>
+            <button class="tab-btn" onclick="showTab('dash')" data-ui="tab_dashboard">📊 Dashboard</button>
+            <button class="tab-btn" onclick="showTab('imci')" data-ui="tab_imci">📋 IMCI</button>
+        </div>
+
+        <!-- CHAT -->
+        <div id="tabChat" class="tab-content active">
+            <div id="healthBanner" class="health-banner">
+                <span id="healthBannerText">🏥 Health Triage Mode Active</span>
+                <button class="btn-exit" id="exitHealthBtn" onclick="exitHealth()">Exit Health Mode</button>
+            </div>
+            <div class="chat-wrap" id="chatWrap"></div>
+            <div class="input-row">
+                <div class="input-inner">
+                    <textarea class="msg-input" id="msgInput" rows="1"
+                        placeholder="Ask anything, or describe symptoms..." onkeydown="handleKey(event)"
+                        oninput="autoResize(this)"></textarea>
+                    <button class="btn-send" id="btnSend" onclick="sendMessage()">➤</button>
+                </div>
+                <div class="input-hint" id="inputHint">💬 General mode · Mention symptoms to activate health triage
+                </div>
+            </div>
+        </div>
+
+        <!-- DASHBOARD -->
+        <div id="tabDash" class="tab-content">
+            <div class="dash-wrap" id="dashWrap">
+                <div style="text-align:center;color:var(--muted);padding:40px;font-size:14px;" data-ui="loading">
+                    Loading...</div>
+            </div>
+        </div>
+
+        <!-- IMCI -->
+        <div id="tabImci" class="tab-content">
+            <div class="imci-wrap">
+                <div class="imci-section">
+                    <div class="imci-head" style="background:var(--red)" data-ui="imci_emergency">🚨 EMERGENCY — Call
+                        108 Immediately</div>
+                    <div class="imci-body">
+                        <div class="imci-row"><span data-ui="imci_e1a">Fever + stiff neck</span><span class="imci-cond"
+                                style="color:var(--red)" data-ui="imci_e1b">Meningitis</span></div>
+                        <div class="imci-row"><span data-ui="imci_e2a">Chest pain + sweating</span><span
+                                class="imci-cond" style="color:var(--red)" data-ui="imci_e2b">Cardiac</span></div>
+                        <div class="imci-row"><span data-ui="imci_e3a">Infant breathing difficulty</span><span
+                                class="imci-cond" style="color:var(--red)" data-ui="imci_e3b">Pneumonia</span></div>
+                        <div class="imci-row"><span data-ui="imci_e4a">Unconscious/not responding</span><span
+                                class="imci-cond" style="color:var(--red)" data-ui="imci_e4b">Critical</span></div>
+                        <div class="imci-row"><span data-ui="imci_e5a">Convulsions/seizures</span><span
+                                class="imci-cond" style="color:var(--red)" data-ui="imci_e5b">Seizure</span></div>
+                        <div class="imci-row"><span data-ui="imci_e6a">Blood in vomit or stool</span><span
+                                class="imci-cond" style="color:var(--red)" data-ui="imci_e6b">Bleeding</span></div>
+                    </div>
+                </div>
+                <div class="imci-section">
+                    <div class="imci-head" style="background:var(--orange)" data-ui="imci_urgent">⚠️ URGENT — PHC within
+                        24 hours</div>
+                    <div class="imci-body">
+                        <div class="imci-row"><span data-ui="imci_u1a">Fever &gt;3 days</span><span class="imci-cond"
+                                style="color:var(--orange)" data-ui="imci_u1b">Prolonged fever</span></div>
+                        <div class="imci-row"><span data-ui="imci_u2a">Infant high fever</span><span class="imci-cond"
+                                style="color:var(--orange)" data-ui="imci_u2b">Infant emergency</span></div>
+                        <div class="imci-row"><span data-ui="imci_u3a">Can't eat/drink</span><span class="imci-cond"
+                                style="color:var(--orange)" data-ui="imci_u3b">Dehydration risk</span></div>
+                        <div class="imci-row"><span data-ui="imci_u4a">Fast breathing</span><span class="imci-cond"
+                                style="color:var(--orange)" data-ui="imci_u4b">Respiratory</span></div>
+                    </div>
+                </div>
+                <div class="imci-section">
+                    <div class="imci-head" style="background:var(--blue)" data-ui="imci_monitor">👁️ MONITOR — Home care
+                        2–3 days</div>
+                    <div class="imci-body">
+                        <div class="imci-row"><span data-ui="imci_m1a">Mild fever</span><span class="imci-cond"
+                                style="color:var(--blue)" data-ui="imci_m1b">Observe</span></div>
+                        <div class="imci-row"><span data-ui="imci_m2a">Mild diarrhea</span><span class="imci-cond"
+                                style="color:var(--blue)" data-ui="imci_m2b">ORS + monitor</span></div>
+                        <div class="imci-row"><span data-ui="imci_m3a">Mild cough</span><span class="imci-cond"
+                                style="color:var(--blue)" data-ui="imci_m3b">Watch for worsening</span></div>
+                    </div>
+                </div>
+                <div class="imci-section">
+                    <div class="imci-head" style="background:var(--green)" data-ui="imci_home">🏠 HOME — Rest · ORS ·
+                        Paracetamol</div>
+                    <div class="imci-body">
+                        <div class="imci-row"><span data-ui="imci_h1a">Minor symptoms</span><span class="imci-cond"
+                                style="color:var(--green)" data-ui="imci_h1b">Self-care</span></div>
+                        <div class="imci-row"><span data-ui="imci_h2a">Return if no improvement after 2 days</span><span
+                                class="imci-cond" style="color:var(--green)" data-ui="imci_h2b">Follow-up</span></div>
+                    </div>
+                </div>
+                <p style="font-size:11px;color:var(--muted);text-align:center;padding:6px">WHO IMCI 2014 · MOHFW India
+                    IMNCI</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ══════════════════════════════════════════
+        // UI TRANSLATIONS
+        // ══════════════════════════════════════════
+        const UI_STRINGS = {
+            en: { loginTitle: "ASHA Sahayak", loginSub: "AI Health Assistant · Enter patient details to begin", existing_patient: "👤 Existing Patient", new_patient: "➕ New Patient", patient_id_label: "Patient ID", full_name_label: "Full Name", age_label: "Age", gender_label: "Gender", village_label: "Village", phone_label: "Phone (optional)", select_opt: "Select", continue_btn: "Continue →", register_btn: "Register & Start →", tab_chat: "💬 Chat", tab_dashboard: "📊 Dashboard", tab_imci: "📋 IMCI", loading: "Loading...", health_mode: "🏥 Health Triage Mode Active", exit_health: "Exit Health Mode", general_assistant: "💬 General Assistant", health_triage: "🏥 Health Triage Mode", hint_general: "💬 General mode · Mention symptoms to activate health triage", hint_health: "🏥 Health triage active · Enter to send", copy_btn: "📋 Copy", copied_btn: "✅ Copied", alert_recent: "⚠️ Recent Visit Alert", alert_emergency: "🚨 EMERGENCY Follow-up Alert!", imci_emergency: "🚨 EMERGENCY — Call 108 Immediately", imci_urgent: "⚠️ URGENT — PHC within 24 hours", imci_monitor: "👁️ MONITOR — Home care 2–3 days", imci_home: "🏠 HOME — Rest · ORS · Paracetamol", imci_e1a: "Fever + stiff neck", imci_e1b: "Meningitis", imci_e2a: "Chest pain + sweating", imci_e2b: "Cardiac", imci_e3a: "Infant breathing difficulty", imci_e3b: "Pneumonia", imci_e4a: "Unconscious/not responding", imci_e4b: "Critical", imci_e5a: "Convulsions/seizures", imci_e5b: "Seizure", imci_e6a: "Blood in vomit or stool", imci_e6b: "Bleeding", imci_u1a: "Fever >3 days", imci_u1b: "Prolonged fever", imci_u2a: "Infant high fever", imci_u2b: "Infant emergency", imci_u3a: "Can't eat/drink", imci_u3b: "Dehydration risk", imci_u4a: "Fast breathing", imci_u4b: "Respiratory", imci_m1a: "Mild fever", imci_m1b: "Observe", imci_m2a: "Mild diarrhea", imci_m2b: "ORS + monitor", imci_m3a: "Mild cough", imci_m3b: "Watch for worsening", imci_h1a: "Minor symptoms", imci_h1b: "Self-care", imci_h2a: "Return if no improvement after 2 days", imci_h2b: "Follow-up" },
+            hi: { loginTitle: "आशा सहायक", loginSub: "AI स्वास्थ्य सहायक · चैट शुरू करने के लिए मरीज़ की जानकारी दें", existing_patient: "👤 पुराना मरीज़", new_patient: "➕ नया मरीज़", patient_id_label: "मरीज़ ID", full_name_label: "पूरा नाम", age_label: "उम्र", gender_label: "लिंग", village_label: "गाँव", phone_label: "फ़ोन (वैकल्पिक)", select_opt: "चुनें", continue_btn: "जारी रखें →", register_btn: "पंजीकृत करें →", tab_chat: "💬 चैट", tab_dashboard: "📊 डैशबोर्ड", tab_imci: "📋 IMCI", loading: "लोड हो रहा है...", health_mode: "🏥 स्वास्थ्य ट्राइएज मोड सक्रिय", exit_health: "स्वास्थ्य मोड से बाहर", general_assistant: "💬 सामान्य सहायक", health_triage: "🏥 स्वास्थ्य ट्राइएज मोड", hint_general: "💬 सामान्य मोड · लक्षण बताएं तो स्वास्थ्य मोड शुरू होगा", hint_health: "🏥 ट्राइएज सक्रिय · Enter दबाएं", copy_btn: "📋 कॉपी", copied_btn: "✅ कॉपी हो गया", alert_recent: "⚠️ हाल की विज़िट अलर्ट", alert_emergency: "🚨 आपातकालीन अलर्ट!", imci_emergency: "🚨 आपातकाल — तुरंत 108 पर कॉल करें", imci_urgent: "⚠️ अर्जेंट — 24 घंटे में PHC जाएं", imci_monitor: "👁️ निगरानी — 2-3 दिन घर पर", imci_home: "🏠 घर — आराम · ORS · पैरासिटामोल", imci_e1a: "बुखार + गर्दन अकड़न", imci_e1b: "मेनिनजाइटिस", imci_e2a: "सीने में दर्द + पसीना", imci_e2b: "हृदय रोग", imci_e3a: "शिशु को सांस की तकलीफ", imci_e3b: "निमोनिया", imci_e4a: "बेहोश/प्रतिक्रिया नहीं", imci_e4b: "गंभीर", imci_e5a: "दौरे/मिर्गी", imci_e5b: "सीज़र", imci_e6a: "उल्टी में खून", imci_e6b: "ब्लीडिंग", imci_u1a: "3 दिन से अधिक बुखार", imci_u1b: "लंबा बुखार", imci_u2a: "शिशु तेज़ बुखार", imci_u2b: "शिशु आपातकाल", imci_u3a: "खाना/पानी नहीं", imci_u3b: "निर्जलीकरण", imci_u4a: "तेज़ सांस", imci_u4b: "श्वसन", imci_m1a: "हल्का बुखार", imci_m1b: "निरीक्षण", imci_m2a: "हल्का दस्त", imci_m2b: "ORS", imci_m3a: "हल्की खांसी", imci_m3b: "ध्यान दें", imci_h1a: "मामूली लक्षण", imci_h1b: "घर पर देखभाल", imci_h2a: "2 दिन में सुधार नहीं तो आएं", imci_h2b: "फॉलो-अप" },
+            te: { loginTitle: "ఆశా సహాయక్", loginSub: "AI ఆరోగ్య సహాయకుడు · చాట్ ప్రారంభించడానికి వివరాలు నమోదు చేయండి", existing_patient: "👤 పాత రోగి", new_patient: "➕ కొత్త రోగి", patient_id_label: "రోగి ID", full_name_label: "పూర్తి పేరు", age_label: "వయస్సు", gender_label: "లింగం", village_label: "గ్రామం", phone_label: "ఫోన్ (ఐచ్ఛికం)", select_opt: "ఎంచుకోండి", continue_btn: "కొనసాగించు →", register_btn: "నమోదు చేయి →", tab_chat: "💬 చాట్", tab_dashboard: "📊 డాష్‌బోర్డ్", tab_imci: "📋 IMCI", loading: "లోడ్ అవుతోంది...", health_mode: "🏥 ఆరోగ్య ట్రయాజ్ మోడ్ యాక్టివ్", exit_health: "ఆరోగ్య మోడ్ నుండి నిష్క్రమించు", general_assistant: "💬 సాధారణ సహాయకుడు", health_triage: "🏥 ఆరోగ్య ట్రయాజ్ మోడ్", hint_general: "💬 సాధారణ మోడ్ · లక్షణాలు చెప్పండి", hint_health: "🏥 ట్రయాజ్ యాక్టివ్", copy_btn: "📋 కాపీ", copied_btn: "✅ కాపీ అయింది", alert_recent: "⚠️ ఇటీవలి సందర్శన హెచ్చరిక", alert_emergency: "🚨 అత్యవసర హెచ్చరిక!", imci_emergency: "🚨 అత్యవసరం — వెంటనే 108 కి కాల్ చేయండి", imci_urgent: "⚠️ అర్జెంట్ — 24 గంటల్లో PHC వెళ్ళండి", imci_monitor: "👁️ పర్యవేక్షణ — 2-3 రోజులు ఇంట్లో", imci_home: "🏠 ఇంట్లో — విశ్రాంతి · ORS · పారాసిటమాల్", imci_e1a: "జ్వరం + మెడ దృఢత్వం", imci_e1b: "మెనింజైటిస్", imci_e2a: "ఛాతీ నొప్పి + చెమట", imci_e2b: "హార్ట్", imci_e3a: "శిశువుకు శ్వాస ఇబ్బంది", imci_e3b: "న్యుమోనియా", imci_e4a: "స్పృహ కోల్పోవడం", imci_e4b: "క్రిటికల్", imci_e5a: "మూర్ఛలు", imci_e5b: "సీజర్", imci_e6a: "వాంతిలో రక్తం", imci_e6b: "బ్లీడింగ్", imci_u1a: "3 రోజులకు మించి జ్వరం", imci_u1b: "దీర్ఘ జ్వరం", imci_u2a: "శిశువుకు తీవ్ర జ్వరం", imci_u2b: "శిశు అత్యవసరం", imci_u3a: "తినలేకపోవడం", imci_u3b: "నిర్జలీకరణం", imci_u4a: "వేగంగా శ్వాస", imci_u4b: "శ్వాసకోశ", imci_m1a: "తేలికపాటి జ్వరం", imci_m1b: "పరిశీలన", imci_m2a: "తేలికపాటి విరేచనాలు", imci_m2b: "ORS", imci_m3a: "తేలికపాటి దగ్గు", imci_m3b: "మారితే చూడండి", imci_h1a: "చిన్న లక్షణాలు", imci_h1b: "స్వయం సంరక్షణ", imci_h2a: "2 రోజుల్లో మెరుగుపడకపోతే రండి", imci_h2b: "ఫాలో-అప్" },
+            kn: { loginTitle: "ಆಶಾ ಸಹಾಯಕ", loginSub: "AI ಆರೋಗ್ಯ ಸಹಾಯಕ · ಚಾಟ್ ಪ್ರಾರಂಭಿಸಲು ವಿವರ ನಮೂದಿಸಿ", existing_patient: "👤 ಹಳೆಯ ರೋಗಿ", new_patient: "➕ ಹೊಸ ರೋಗಿ", patient_id_label: "ರೋಗಿ ID", full_name_label: "ಪೂರ್ಣ ಹೆಸರು", age_label: "ವಯಸ್ಸು", gender_label: "ಲಿಂಗ", village_label: "ಹಳ್ಳಿ", phone_label: "ಫೋನ್ (ಐಚ್ಛಿಕ)", select_opt: "ಆಯ್ಕೆ ಮಾಡಿ", continue_btn: "ಮುಂದುವರಿಯಿರಿ →", register_btn: "ನೋಂದಾಯಿಸಿ →", tab_chat: "💬 ಚಾಟ್", tab_dashboard: "📊 ಡ್ಯಾಶ್‌ಬೋರ್ಡ್", tab_imci: "📋 IMCI", loading: "ಲೋಡ್ ಆಗುತ್ತಿದೆ...", health_mode: "🏥 ಆರೋಗ್ಯ ಟ್ರಯಾಜ್ ಮೋಡ್ ಸಕ್ರಿಯ", exit_health: "ಆರೋಗ್ಯ ಮೋಡ್ ನಿರ್ಗಮಿಸಿ", general_assistant: "💬 ಸಾಮಾನ್ಯ ಸಹಾಯಕ", health_triage: "🏥 ಆರೋಗ್ಯ ಟ್ರಯಾಜ್ ಮೋಡ್", hint_general: "💬 ಸಾಮಾನ್ಯ ಮೋಡ್ · ಲಕ್ಷಣಗಳನ್ನು ತಿಳಿಸಿ", hint_health: "🏥 ಟ್ರಯಾಜ್ ಸಕ್ರಿಯ", copy_btn: "📋 ನಕಲು", copied_btn: "✅ ನಕಲಾಯಿತು", alert_recent: "⚠️ ಇತ್ತೀಚಿನ ಭೇಟಿ ಎಚ್ಚರಿಕೆ", alert_emergency: "🚨 ತುರ್ತು ಎಚ್ಚರಿಕೆ!", imci_emergency: "🚨 ತುರ್ತು — ತಕ್ಷಣ 108 ಗೆ ಕರೆ ಮಾಡಿ", imci_urgent: "⚠️ ತುರ್ತು — 24 ಗಂಟೆಯಲ್ಲಿ PHC", imci_monitor: "👁️ ಮೇಲ್ವಿಚಾರಣೆ — 2-3 ದಿನ ಮನೆಯಲ್ಲಿ", imci_home: "🏠 ಮನೆ — ವಿಶ್ರಾಂತಿ · ORS · ಪ್ಯಾರಸಿಟಮಾಲ್", imci_e1a: "ಜ್ವರ + ಕತ್ತು ಬಿಗಿತ", imci_e1b: "ಮೆನಿಂಜೈಟಿಸ್", imci_e2a: "ಎದೆ ನೋವು + ಬೆವರು", imci_e2b: "ಹೃದಯ", imci_e3a: "ಶಿಶುವಿಗೆ ಉಸಿರಾಟ ತೊಂದರೆ", imci_e3b: "ನ್ಯುಮೋನಿಯಾ", imci_e4a: "ಪ್ರಜ್ಞೆ ಕಳೆದುಕೊಳ್ಳುವುದು", imci_e4b: "ನಿರ್ಣಾಯಕ", imci_e5a: "ಸೆಳೆತ", imci_e5b: "ಸೀಝರ್", imci_e6a: "ವಾಂತಿಯಲ್ಲಿ ರಕ್ತ", imci_e6b: "ರಕ್ತಸ್ರಾವ", imci_u1a: "3 ದಿನಕ್ಕಿಂತ ಹೆಚ್ಚು ಜ್ವರ", imci_u1b: "ದೀರ್ಘ ಜ್ವರ", imci_u2a: "ಶಿಶುವಿಗೆ ತೀವ್ರ ಜ್ವರ", imci_u2b: "ಶಿಶು ತುರ್ತು", imci_u3a: "ತಿನ್ನಲು/ಕುಡಿಯಲು ಆಗದು", imci_u3b: "ನಿರ್ಜಲೀಕರಣ", imci_u4a: "ವೇಗದ ಉಸಿರಾಟ", imci_u4b: "ಶ್ವಾಸಕೋಶ", imci_m1a: "ಸೌಮ್ಯ ಜ್ವರ", imci_m1b: "ಗಮನಿಸಿ", imci_m2a: "ಸೌಮ್ಯ ಭೇದಿ", imci_m2b: "ORS", imci_m3a: "ಸೌಮ್ಯ ಕೆಮ್ಮು", imci_m3b: "ಹದಗೆಟ್ಟರೆ ನೋಡಿ", imci_h1a: "ಸಣ್ಣ ಲಕ್ಷಣಗಳು", imci_h1b: "ಸ್ವ-ಆರೈಕೆ", imci_h2a: "2 ದಿನದಲ್ಲಿ ಸುಧಾರಣೆ ಇಲ್ಲದಿದ್ದರೆ ಬನ್ನಿ", imci_h2b: "ಫಾಲೋ-ಅಪ್" },
+            ta: { loginTitle: "ஆஷா சகாயக்", loginSub: "AI சுகாதார உதவியாளர் · அரட்டை தொடங்க விவரங்களை உள்ளிடுங்கள்", existing_patient: "👤 பழைய நோயாளி", new_patient: "➕ புதிய நோயாளி", patient_id_label: "நோயாளி ID", full_name_label: "முழு பெயர்", age_label: "வயது", gender_label: "பாலினம்", village_label: "கிராமம்", phone_label: "தொலைபேசி (விரும்பினால்)", select_opt: "தேர்வு செய்யுங்கள்", continue_btn: "தொடரவும் →", register_btn: "பதிவு செய்யவும் →", tab_chat: "💬 அரட்டை", tab_dashboard: "📊 டாஷ்போர்டு", tab_imci: "📋 IMCI", loading: "ஏற்றுகிறது...", health_mode: "🏥 சுகாதார ட்ரையேஜ் மோட் செயல்பாட்டில்", exit_health: "சுகாதார மோட்டை விட்டு வெளியேறு", general_assistant: "💬 பொது உதவியாளர்", health_triage: "🏥 சுகாதார ட்ரையேஜ் மோட்", hint_general: "💬 பொது மோட் · அறிகுறிகளைக் குறிப்பிடவும்", hint_health: "🏥 ட்ரையேஜ் செயல்பாட்டில்", copy_btn: "📋 நகல்", copied_btn: "✅ நகல் ஆனது", alert_recent: "⚠️ சமீபத்திய வருகை எச்சரிக்கை", alert_emergency: "🚨 அவசர எச்சரிக்கை!", imci_emergency: "🚨 அவசரம் — உடனடியாக 108 ஐ அழைக்கவும்", imci_urgent: "⚠️ அவசரம் — 24 மணி நேரத்தில் PHC", imci_monitor: "👁️ கண்காணிப்பு — 2-3 நாட்கள் வீட்டில்", imci_home: "🏠 வீடு — ஓய்வு · ORS · பாராசிட்டமால்", imci_e1a: "காய்ச்சல் + கழுத்து விறைப்பு", imci_e1b: "மூளைக்காய்ச்சல்", imci_e2a: "மார்பு வலி + வியர்வை", imci_e2b: "இதயம்", imci_e3a: "குழந்தைக்கு மூச்சுத்திணறல்", imci_e3b: "நிமோனியா", imci_e4a: "நினைவிழத்தல்", imci_e4b: "நெருக்கடி", imci_e5a: "வலிப்பு", imci_e5b: "வலிப்பு நோய்", imci_e6a: "வாந்தியில் ரத்தம்", imci_e6b: "இரத்தப்போக்கு", imci_u1a: "3 நாட்களுக்கு மேல் காய்ச்சல்", imci_u1b: "நீடித்த காய்ச்சல்", imci_u2a: "குழந்தைக்கு கடுமையான காய்ச்சல்", imci_u2b: "குழந்தை அவசரம்", imci_u3a: "சாப்பிட/குடிக்க முடியவில்லை", imci_u3b: "நீரிழப்பு", imci_u4a: "வேக மூச்சு", imci_u4b: "சுவாச", imci_m1a: "லேசான காய்ச்சல்", imci_m1b: "கவனி", imci_m2a: "லேசான வயிற்றுப்போக்கு", imci_m2b: "ORS", imci_m3a: "லேசான இருமல்", imci_m3b: "மோசமானால் பார்க்கவும்", imci_h1a: "சிறிய அறிகுறிகள்", imci_h1b: "சுய பராமரிப்பு", imci_h2a: "2 நாட்களில் முன்னேற்றம் இல்லாவிட்டால் வரவும்", imci_h2b: "பின்தொடர்தல்" }
+        };
+
+        const GREETINGS = { en: "Hi! I'm ASHA Sahayak 👋 I can help with anything — questions, ideas, or health concerns. What's on your mind?", hi: "नमस्ते! मैं ASHA सहायक हूँ 👋 किसी भी बात में मदद कर सकता हूँ। बताइए!", te: "నమస్కారం! నేను ASHA సహాయక్ 👋 ఏ విషయంలోనైనా సహాయం చేయగలను!", kn: "ನಮಸ್ಕಾರ! ನಾನು ASHA ಸಹಾಯಕ 👋 ಯಾವುದೇ ವಿಷಯದಲ್ಲಿ ಸಹಾಯ ಮಾಡಬಲ್ಲೆ!", ta: "வணக்கம்! நான் ASHA உதவியாளர் 👋 எந்த விஷயத்திலும் உதவ தயார்!" };
+        const LEVEL_CFG = { EMERGENCY: { color: "#e53935", bg: "#fff0f0", icon: "🚨" }, URGENT: { color: "#ff8c00", bg: "#fff8f0", icon: "⚠️" }, MONITOR: { color: "#1565c0", bg: "#f0f8ff", icon: "👁️" }, HOME: { color: "#2e7d32", bg: "#f0fff4", icon: "🏠" } };
+
+        // ── STATE: one language variable controls everything ──
+        let currentPatient = null, currentMode = "general", checkTimeout = null;
+        let uiLang = "en";   // This ALSO sets the chat language
+        let msgCounter = 0;
+
+        // ══════════════════════════════════════════
+        // KEY FIX: applyUILang sets BOTH ui and chat language
+        // ══════════════════════════════════════════
+        function applyUILang(lang) {
+            uiLang = lang;
+            // Sync both selectors
+            document.getElementById("uiLangSel").value = lang;
+            document.getElementById("appUiLangSel").value = lang;
+            const T = UI_STRINGS[lang] || UI_STRINGS.en;
+            // Translate all data-ui elements
+            document.querySelectorAll("[data-ui]").forEach(el => {
+                const k = el.getAttribute("data-ui");
+                if (T[k]) el.textContent = T[k];
+            });
+            // Update special elements
+            document.getElementById("loginTitle").textContent = T.loginTitle;
+            document.getElementById("loginSub").textContent = T.loginSub;
+            document.getElementById("headerSub").textContent = currentMode === "health" ? T.health_triage : T.general_assistant;
+            document.getElementById("healthBannerText").textContent = T.health_mode;
+            document.getElementById("exitHealthBtn").textContent = T.exit_health;
+            document.getElementById("inputHint").textContent = currentMode === "health" ? T.hint_health : T.hint_general;
+            document.getElementById("healthBanner").classList.toggle("show", currentMode === "health");
+        }
+
+        function switchTab(tab) {
+            document.getElementById("tabOld").classList.toggle("active", tab === "old");
+            document.getElementById("tabNew").classList.toggle("active", tab === "new");
+            document.getElementById("formOld").style.display = tab === "old" ? "block" : "none";
+            document.getElementById("formNew").style.display = tab === "new" ? "block" : "none";
+            document.getElementById("alertBanner").classList.remove("show");
+        }
+
+        document.getElementById("oldPatientId").addEventListener("input", function () {
+            clearTimeout(checkTimeout);
+            const pid = this.value.trim().toUpperCase();
+            document.getElementById("alertBanner").classList.remove("show");
+            if (pid.length >= 3) checkTimeout = setTimeout(() => checkPatient(pid), 600);
+        });
+
+        async function checkPatient(pid) {
+            try {
+                const res = await fetch("/api/patient/check", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ patient_id: pid }) });
+                const data = await res.json();
+                if (data.exists && data.alert_12hr) {
+                    const T = UI_STRINGS[uiLang] || UI_STRINGS.en;
+                    const isE = data.last_triage === "EMERGENCY";
+                    const banner = document.getElementById("alertBanner");
+                    banner.classList.toggle("alert-emergency", isE);
+                    banner.classList.add("show");
+                    document.getElementById("alertTitle").textContent = isE ? T.alert_emergency : T.alert_recent;
+                    document.getElementById("alertBody").textContent = `${data.patient.name} — ${data.hours_ago}h ago` + (data.last_triage ? ` (${data.last_triage})` : "");
+                }
+            } catch (e) { }
+        }
+
+        async function loginExisting() {
+            const pid = document.getElementById("oldPatientId").value.trim().toUpperCase();
+            if (!pid) { showToast("Enter a Patient ID"); return; }
+            const btn = document.getElementById("btnLogin");
+            btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>';
+            try {
+                const res = await fetch("/api/patient/check", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ patient_id: pid }) });
+                const data = await res.json();
+                if (!data.exists) { showToast("Patient not found. Register as new."); btn.disabled = false; btn.textContent = (UI_STRINGS[uiLang] || UI_STRINGS.en).continue_btn; return; }
+                currentPatient = data.patient;
+                await startVisit(pid);
+                openApp(data.alert_12hr, data);
+            } catch (e) { showToast("Connection error."); }
+            finally { btn.disabled = false; btn.textContent = (UI_STRINGS[uiLang] || UI_STRINGS.en).continue_btn; }
+        }
+
+        async function registerNew() {
+            const pid = document.getElementById("newPatientId").value.trim().toUpperCase();
+            const name = document.getElementById("newName").value.trim();
+            const age = document.getElementById("newAge").value;
+            const gender = document.getElementById("newGender").value;
+            const village = document.getElementById("newVillage").value.trim();
+            const phone = document.getElementById("newPhone").value.trim();
+            if (!pid || !name || !age || !gender) { showToast("Fill in ID, Name, Age and Gender"); return; }
+            const btn = document.getElementById("btnRegister");
+            btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>';
+            try {
+                const res = await fetch("/api/patient/register", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ patient_id: pid, name, age: parseInt(age), gender, village, phone }) });
+                const data = await res.json();
+                if (data.error) { showToast(data.error); return; }
+                currentPatient = { patient_id: pid, name, age, gender, village, phone };
+                await startVisit(pid);
+                openApp(false, null);
+            } catch (e) { showToast("Connection error."); }
+            finally { btn.disabled = false; btn.textContent = (UI_STRINGS[uiLang] || UI_STRINGS.en).register_btn; }
+        }
+
+        async function startVisit(pid) {
+            // ── Send uiLang as chat_lang so backend uses it ──
+            await fetch("/api/visit/start", {
+                method: "POST", headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ patient_id: pid, lang: uiLang, model: document.getElementById("modelSel").value })
+            });
+        }
+
+        function openApp(hasAlert, alertData) {
+            document.getElementById("loginScreen").classList.add("hidden");
+            document.getElementById("appScreen").classList.remove("hidden");
+            document.getElementById("patientBadge").textContent = `👤 ${currentPatient.name}`;
+            document.getElementById("chatWrap").innerHTML = "";
+            currentMode = "general";
+            applyUILang(uiLang);
+            addBotMessage(GREETINGS[uiLang] || GREETINGS.en);
+            if (hasAlert && alertData) {
+                setTimeout(() => {
+                    const isE = alertData.last_triage === "EMERGENCY";
+                    addBotMessage((isE ? "🚨 **EMERGENCY ALERT!**" : "⚠️ **Recent Visit Alert**") + `\n\n${currentPatient.name} visited **${alertData.hours_ago} hours ago**` + (alertData.last_triage ? ` — Triage: **${alertData.last_triage}**` : "") + `.\n\nPlease review carefully before proceeding.`);
+                }, 600);
+            }
+        }
+
+        function goToLogin() {
+            document.getElementById("appScreen").classList.add("hidden");
+            document.getElementById("loginScreen").classList.remove("hidden");
+            document.getElementById("oldPatientId").value = "";
+            document.getElementById("alertBanner").classList.remove("show");
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById("msgInput");
+            const text = input.value.trim();
+            if (!text) return;
+            input.value = ""; autoResize(input);
+            addUserMessage(text); showTyping();
+            document.getElementById("btnSend").disabled = true;
+            try {
+                // ── Always send current uiLang as chat_lang ──
+                const res = await fetch("/api/chat", {
+                    method: "POST", headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: text, chat_lang: uiLang })
+                });
+                const data = await res.json();
+                removeTyping();
+                currentMode = data.mode;
+                applyUILang(uiLang);
+                addBotMessage(data.reply, data.triage);
+                if (data.triage_done) setTimeout(() => addBotMessage("✅ Triage complete. Click 👤 to start a new patient."), 400);
+            } catch (e) { removeTyping(); addBotMessage("❌ Connection error."); }
+            finally { document.getElementById("btnSend").disabled = false; document.getElementById("msgInput").focus(); }
+        }
+
+        function handleKey(e) { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
+        function autoResize(el) { el.style.height = "auto"; el.style.height = Math.min(el.scrollHeight, 110) + "px"; }
+
+        function addUserMessage(text) {
+            document.getElementById("chatWrap").insertAdjacentHTML("beforeend", `<div class="msg-row user"><div class="msg-block user-block"><div class="bubble user">${escapeHtml(text)}</div></div><div class="avatar user">👤</div></div>`);
+            document.getElementById("chatWrap").scrollTop = 99999;
+        }
+
+        function addBotMessage(text, triage = null) {
+            const id = "msg_" + (++msgCounter);
+            const wrap = document.getElementById("chatWrap");
+            const T = UI_STRINGS[uiLang] || UI_STRINGS.en;
+            let html = `<div class="msg-row"><div class="avatar bot">🏥</div><div class="msg-block"><div class="bubble bot" id="${id}">${formatText(text)}</div><div style="display:flex;align-items:center;gap:6px;margin-top:3px;"><button class="copy-btn" onclick="copyMsg('${id}',this)">${T.copy_btn}</button>${currentMode === "health" ? '<span class="mode-tag">🏥 Health Triage</span>' : ""}</div>`;
+            if (triage) {
+                const cfg = LEVEL_CFG[triage.level] || LEVEL_CFG.HOME;
+                const facs = getFacilities(triage.level);
+                html += `<div class="triage-card" style="border-color:${cfg.color}"><div class="triage-head" style="background:${cfg.color}">${cfg.icon} TRIAGE: ${triage.level}</div><div class="triage-body" style="background:${cfg.bg}">${triage.reasoning ? `<div class="triage-reasoning">📋 ${escapeHtml(triage.reasoning)}</div>` : ""}${triage.advice ? `<div class="triage-advice">${escapeHtml(triage.advice)}</div>` : ""}<div class="facilities"><h4>📍 Nearby Facilities</h4>${facs.map(f => `<div class="facility-row">🏥 <strong>${f.name}</strong> — ${f.dist} — 📞 ${f.phone} — ${f.hours}</div>`).join("")}<div class="ambulance">📞 Ambulance: 108</div></div></div></div>`;
+            }
+            html += `</div></div>`;
+            wrap.insertAdjacentHTML("beforeend", html);
+            wrap.scrollTop = 99999;
+        }
+
+        function copyMsg(id, btn) {
+            const el = document.getElementById(id);
+            const txt = el ? el.innerText : "";
+            const T = UI_STRINGS[uiLang] || UI_STRINGS.en;
+            const done = () => { btn.textContent = T.copied_btn; btn.classList.add("copied"); setTimeout(() => { btn.textContent = T.copy_btn; btn.classList.remove("copied"); }, 2000); };
+            if (navigator.clipboard) { navigator.clipboard.writeText(txt).then(done).catch(() => { fallbackCopy(txt); done(); }); }
+            else { fallbackCopy(txt); done(); }
+        }
+        function fallbackCopy(txt) { const ta = document.createElement("textarea"); ta.value = txt; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); document.body.removeChild(ta); }
+
+        function getFacilities(level) {
+            if (level === "EMERGENCY" || level === "URGENT") return [{ name: "CHC Saharanpur", dist: "8.7km", phone: "01234-678901", hours: "✅ 24hr" }, { name: "District Hospital", dist: "14.2km", phone: "01234-789012", hours: "✅ 24hr" }];
+            return [{ name: "PHC Rampur", dist: "2.3km", phone: "01234-567890", hours: "⏰ Limited" }];
+        }
+        function showTyping() { document.getElementById("chatWrap").insertAdjacentHTML("beforeend", `<div class="msg-row" id="typingRow"><div class="avatar bot">🏥</div><div class="bubble bot typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div>`); document.getElementById("chatWrap").scrollTop = 99999; }
+        function removeTyping() { document.getElementById("typingRow")?.remove(); }
+
+        async function exitHealth() {
+            await fetch("/api/chat/exit-health", { method: "POST" });
+            currentMode = "general"; applyUILang(uiLang); showToast("Switched to General mode");
+        }
+
+        function showTab(tab) {
+            document.querySelectorAll(".tab-btn").forEach((b, i) => { b.classList.toggle("active", ["chat", "dash", "imci"][i] === tab); });
+            document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+            document.getElementById("tab" + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add("active");
+            if (tab === "dash") loadDashboard();
+        }
+
+        async function loadDashboard() {
+            const wrap = document.getElementById("dashWrap");
+            try {
+                const res = await fetch("/api/dashboard");
+                const patients = await res.json();
+                const T = UI_STRINGS[uiLang] || UI_STRINGS.en;
+                if (!patients.length) { wrap.innerHTML = `<div style="text-align:center;color:var(--muted);padding:40px">No patients yet.</div>`; return; }
+                const LC = { EMERGENCY: "var(--red)", URGENT: "var(--orange)", MONITOR: "var(--blue)", HOME: "var(--green)" };
+                wrap.innerHTML = `<h3 style="font-size:15px;font-weight:900;margin-bottom:11px">📊 ${T.tab_dashboard} (${patients.length})</h3>` +
+                    patients.map(p => {
+                        const lv = p.last_triage || "—"; const color = LC[p.last_triage] || "var(--muted)"; const flag = p.last_triage === "EMERGENCY" || p.last_triage === "URGENT";
+                        return `<div class="dash-card ${flag ? "flagged" : ""}"><div style="display:flex;justify-content:space-between;align-items:flex-start"><div><div class="dash-name">${escapeHtml(p.name)}</div><div class="dash-meta">${p.patient_id} · ${p.age}y ${p.gender} · 📍 ${p.village || "—"}</div></div><span class="badge" style="background:${color}22;color:${color}">${lv}</span></div><div class="dash-stats"><div class="stat-box"><div class="stat-num" style="color:var(--red)">${p.visit_count || 0}</div><div class="stat-lbl">Visits</div></div><div style="flex:1;align-self:center;font-size:11px;color:var(--muted)">Last: ${p.last_visit || "Never"}</div></div></div>`;
+                    }).join("");
+            } catch (e) { wrap.innerHTML = `<div style="color:red;padding:20px">Failed to load.</div>`; }
+        }
+
+        function escapeHtml(str) { return (str || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+        function formatText(str) { return escapeHtml(str).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/\n/g, "<br>"); }
+        function showToast(msg) { const t = document.getElementById("toast"); t.textContent = msg; t.classList.add("show"); setTimeout(() => t.classList.remove("show"), 2800); }
+
+        // Init
+        applyUILang("en");
+    </script>
+</body>
+
+</html>
